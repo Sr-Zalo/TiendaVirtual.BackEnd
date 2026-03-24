@@ -36,4 +36,11 @@ public class AuthController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    //temporal
+    [HttpGet("hash/{password}")]
+    public IActionResult GetHash(string password)
+    {
+        return Ok(BCrypt.Net.BCrypt.HashPassword(password));
+    }
 }
