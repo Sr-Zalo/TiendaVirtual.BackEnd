@@ -2,12 +2,7 @@
 
 namespace TiendaVirtual.Domain.Interfaces.Repositories;
 
-public interface IProductRepository
+public interface IProductRepository : IGenericRepository<Product>
 {
-    Task<IEnumerable<Product>> GetAllAsync();
-    Task<Product?> GetByIdAsync(int id);
     Task<IEnumerable<Product>> GetByCategoryAsync(int categoryId);
-    Task AddAsync(Product product);
-    Task UpdateAsync(Product product);
-    Task DeleteAsync(int id);
 }

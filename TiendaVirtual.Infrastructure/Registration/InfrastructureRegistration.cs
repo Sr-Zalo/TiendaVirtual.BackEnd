@@ -18,6 +18,9 @@ public static class InfrastructureRegistration
 
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IGenericRepository<Domain.Entities.Category>, GenericRepository<Domain.Entities.Category>>();
 
         return services;
     }

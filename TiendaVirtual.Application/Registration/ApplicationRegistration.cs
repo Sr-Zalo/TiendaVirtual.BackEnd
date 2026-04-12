@@ -12,6 +12,14 @@ public static class ApplicationRegistration
 
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IBoardGameService, BoardGameService>();
+        services.AddScoped<IVideoGameService, VideoGameService>();
+        services.AddScoped<IBookService, BookService>();
+        services.AddScoped<ICollectibleService, CollectibleService>();
+        services.AddScoped<IPuzzleService, PuzzleService>();
+        services.AddScoped<ICartService, CartService>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<ICategoryService, CategoryService>();
 
         return services;
     }

@@ -10,4 +10,6 @@ public class User : BaseEntity
     public string PasswordHash { get; set; } = string.Empty;
 
     public Role Role { get; set; } = null!;
+    public ICollection<Cart> CartItems { get; set; } = new List<Cart>();
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
 }

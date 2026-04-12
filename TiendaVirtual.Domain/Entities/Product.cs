@@ -11,4 +11,11 @@ public class Product : BaseEntity
 
     public Category Category { get; set; } = null!;
     public BoardGame? BoardGame { get; set; }
+    public VideoGame? VideoGame { get; set; }
+    public Book? Book { get; set; }
+    public Collectible? Collectible { get; set; }
+    public Puzzle? Puzzle { get; set; }
+    public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
+    public ICollection<Cart> CartItems { get; set; } = new List<Cart>();
+    public ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
 }

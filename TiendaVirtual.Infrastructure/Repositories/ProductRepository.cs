@@ -5,30 +5,25 @@ using TiendaVirtual.Infrastructure.Data;
 
 namespace TiendaVirtual.Infrastructure.Repositories;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository : GenericRepository<Product>, IProductRepository
 {
-    private readonly AppDbContext _context;
+    public ProductRepository(AppDbContext context) : base(context) { }
 
-    public ProductRepository(AppDbContext context)
+    public override async Task<Product?> GetByIdAsync(int id)
     {
-        _context = context;
+        return await _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.BoardGame)
+            .FirstOrDefaultAsync(p => p.ProductId == id && p.Enabled);
     }
 
-    public async Task<IEnumerable<Product>> GetAllAsync()
+    public override async Task<IEnumerable<Product>> GetAllAsync()
     {
         return await _context.Products
             .Include(p => p.Category)
             .Include(p => p.BoardGame)
             .Where(p => p.Enabled)
             .ToListAsync();
-    }
-
-    public async Task<Product?> GetByIdAsync(int id)
-    {
-        return await _context.Products
-            .Include(p => p.Category)
-            .Include(p => p.BoardGame)
-            .FirstOrDefaultAsync(p => p.ProductId == id && p.Enabled);
     }
 
     public async Task<IEnumerable<Product>> GetByCategoryAsync(int categoryId)
@@ -38,27 +33,5 @@ public class ProductRepository : IProductRepository
             .Include(p => p.BoardGame)
             .Where(p => p.CategoryId == categoryId && p.Enabled)
             .ToListAsync();
-    }
-
-    public async Task AddAsync(Product product)
-    {
-        await _context.Products.AddAsync(product);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Product product)
-    {
-        _context.Products.Update(product);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var product = await _context.Products.FindAsync(id);
-        if (product is not null)
-        {
-            product.Enabled = false;
-            await _context.SaveChangesAsync();
-        }
     }
 }
