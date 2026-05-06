@@ -32,4 +32,14 @@ public class CartRepository : GenericRepository<Cart>, ICartRepository
             item.Enabled = false;
         await _context.SaveChangesAsync();
     }
+
+    public async Task UpdateQuantityAsync(int cartId, int quantity)
+    {
+        var cart = await _context.Carts.FindAsync(cartId);
+        if (cart is not null)
+        {
+            cart.Quantity = quantity;
+            await _context.SaveChangesAsync();
+        }
+    }
 }

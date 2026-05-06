@@ -15,7 +15,54 @@ public class MappingProfile : Profile
         // Product
         CreateMap<Product, ProductDto>()
             .ForMember(dest => dest.CategoryName,
-                       opt => opt.MapFrom(src => src.Category.Name));
+                       opt => opt.MapFrom(src => src.Category.Name))
+            .ForMember(dest => dest.MinPlayers,
+                       opt => opt.MapFrom(src => src.BoardGame != null ? src.BoardGame.MinPlayers : null))
+            .ForMember(dest => dest.MaxPlayers,
+                       opt => opt.MapFrom(src => src.BoardGame != null ? src.BoardGame.MaxPlayers : null))
+            .ForMember(dest => dest.AvgDuration,
+                       opt => opt.MapFrom(src => src.BoardGame != null ? src.BoardGame.AvgDuration : null))
+            .ForMember(dest => dest.MinAge,
+                       opt => opt.MapFrom(src => src.BoardGame != null ? src.BoardGame.MinAge : null))
+            .ForMember(dest => dest.BoardGameType,
+                       opt => opt.MapFrom(src => src.BoardGame != null ? src.BoardGame.Type : null))
+            .ForMember(dest => dest.Platform,
+                       opt => opt.MapFrom(src => src.VideoGame != null ? src.VideoGame.Platform : null))
+            .ForMember(dest => dest.Developer,
+                       opt => opt.MapFrom(src => src.VideoGame != null ? src.VideoGame.Developer : null))
+            .ForMember(dest => dest.Pegi,
+                       opt => opt.MapFrom(src => src.VideoGame != null ? src.VideoGame.Pegi : null))
+            .ForMember(dest => dest.Author,
+                       opt => opt.MapFrom(src => src.Book != null ? src.Book.Author : null))
+            .ForMember(dest => dest.Publisher,
+                       opt => opt.MapFrom(src => src.Book != null ? src.Book.Publisher : null))
+            .ForMember(dest => dest.ISBN,
+                       opt => opt.MapFrom(src => src.Book != null ? src.Book.ISBN : null))
+            .ForMember(dest => dest.Pages,
+                       opt => opt.MapFrom(src => src.Book != null ? src.Book.Pages : null))
+            .ForMember(dest => dest.Language,
+                       opt => opt.MapFrom(src => src.Book != null ? src.Book.Language : null))
+            .ForMember(dest => dest.CollectibleType,
+                       opt => opt.MapFrom(src => src.Collectible != null ? src.Collectible.Type : null))
+            .ForMember(dest => dest.Material,
+                       opt => opt.MapFrom(src => src.Collectible != null ? src.Collectible.Material : null))
+            .ForMember(dest => dest.LimitedEdition,
+                       opt => opt.MapFrom(src => src.Collectible != null ? src.Collectible.LimitedEdition : (bool?)null))
+            .ForMember(dest => dest.Size,
+                       opt => opt.MapFrom(src => src.Collectible != null ? src.Collectible.Size : null))
+            .ForMember(dest => dest.Reference,
+                       opt => opt.MapFrom(src => src.Collectible != null ? src.Collectible.Reference : null))
+            .ForMember(dest => dest.Pieces,
+                       opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Pieces : null))
+            .ForMember(dest => dest.Difficulty,
+                       opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Difficulty : null))
+            .ForMember(dest => dest.Shape,
+                       opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Shape : null))
+            .ForMember(dest => dest.Creator,
+                       opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Creator : null))
+            .ForMember(dest => dest.Dimensions,
+                       opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Dimensions : null));
+
         CreateMap<CreateProductDto, Product>();
         CreateMap<UpdateProductDto, Product>();
 

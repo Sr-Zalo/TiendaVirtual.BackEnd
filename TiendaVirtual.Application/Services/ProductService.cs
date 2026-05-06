@@ -3,6 +3,7 @@ using TiendaVirtual.Application.DTOs.Product;
 using TiendaVirtual.Application.Interfaces.Services;
 using TiendaVirtual.Domain.Entities;
 using TiendaVirtual.Domain.Interfaces.Repositories;
+using TiendaVirtual.Domain.Models;
 
 namespace TiendaVirtual.Application.Services;
 
@@ -57,5 +58,23 @@ public class ProductService : IProductService
     public async Task DeleteAsync(int id)
     {
         await _productRepository.DeleteAsync(id);
+    }
+
+    public async Task<IEnumerable<ProductDto>> GetFilteredAsync(ProductFilterParams filters)
+    {
+        var products = await _productRepository.GetFilteredAsync(filters);
+        return _mapper.Map<IEnumerable<ProductDto>>(products);
+    }
+
+    public async Task<IEnumerable<ProductDto>> GetAllAsync(bool includeOutOfStock = false)
+    {
+        var products = await _productRepository.GetAllAsync(includeOutOfStock);
+        return _mapper.Map<IEnumerable<ProductDto>>(products);
+    }
+
+    public async Task<IEnumerable<ProductDto>> GetFilteredAsync(ProductFilterParams filters, bool includeOutOfStock = false)
+    {
+        var products = await _productRepository.GetFilteredAsync(filters, includeOutOfStock);
+        return _mapper.Map<IEnumerable<ProductDto>>(products);
     }
 }

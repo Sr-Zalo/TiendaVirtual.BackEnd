@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TiendaVirtual.Application.DTOs.Product;
 using TiendaVirtual.Application.Interfaces.Services;
+using TiendaVirtual.Domain.Models;
 
 namespace TiendaVirtual.WebApi.Controllers;
 
@@ -19,7 +20,8 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var products = await _productService.GetAllAsync();
+        var isAdmin = User.IsInRole("Admin");
+        var products = await _productService.GetAllAsync(includeOutOfStock: isAdmin);
         return Ok(products);
     }
 
@@ -63,4 +65,14 @@ public class ProductController : ControllerBase
         await _productService.DeleteAsync(id);
         return NoContent();
     }
+
+    [HttpGet("filter")]
+    public async Task<IActionResult> GetFiltered([FromQuery] ProductFilterParams filters)
+    {
+        var isAdmin = User.IsInRole("Admin");
+        var products = await _productService.GetFilteredAsync(filters, includeOutOfStock: isAdmin);
+        return Ok(products);
+    }
+
+
 }

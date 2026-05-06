@@ -72,6 +72,7 @@ public class AppDbContext : DbContext
         {
             entity.ToTable("BoardGame", "dbo");
             entity.HasKey(e => e.BoardGameId);
+            entity.Property(e => e.BoardGameId).ValueGeneratedNever();
             entity.HasOne(e => e.Product)
                   .WithOne(p => p.BoardGame)
                   .HasForeignKey<BoardGame>(e => e.BoardGameId)

@@ -10,15 +10,18 @@ public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly ICartRepository _cartRepository;
+    private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
     public OrderService(
         IOrderRepository orderRepository,
         ICartRepository cartRepository,
+        IProductRepository productRepository,
         IMapper mapper)
     {
         _orderRepository = orderRepository;
         _cartRepository = cartRepository;
+        _productRepository = productRepository;
         _mapper = mapper;
     }
 
@@ -48,6 +51,13 @@ public class OrderService : IOrderService
         if (!itemsList.Any())
             throw new InvalidOperationException("El carrito está vacío");
 
+        foreach (var item in itemsList)
+        {
+            if (item.Product.Stock < item.Quantity)
+                throw new InvalidOperationException(
+                    $"No hay suficiente stock de '{item.Product.Name}'. Stock disponible: {item.Product.Stock}");
+        }
+
         var order = new Order
         {
             UserId = userId,
@@ -68,6 +78,16 @@ public class OrderService : IOrderService
         order.Total = order.OrderLines.Sum(ol => ol.UnitPrice * ol.Quantity);
 
         await _orderRepository.AddAsync(order);
+
+        foreach (var item in itemsList)
+        {
+            var product = item.Product;
+            product.Stock -= item.Quantity;
+            product.UUser = userId.ToString();
+            product.UDate = DateTime.UtcNow;
+            await _productRepository.UpdateAsync(product);
+        }
+
         await _cartRepository.ClearByUserIdAsync(userId);
 
         var created = await _orderRepository.GetByIdWithDetailsAsync(order.OrderId);

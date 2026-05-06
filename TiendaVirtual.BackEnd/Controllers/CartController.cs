@@ -32,8 +32,15 @@ public class CartController : ControllerBase
     {
         var userId = GetUserId();
         if (userId is null) return Unauthorized();
-        await _cartService.AddOrUpdateAsync(userId.Value, dto);
-        return Ok();
+        try
+        {
+            await _cartService.AddOrUpdateAsync(userId.Value, dto);
+            return Ok();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{cartId}")]
@@ -59,4 +66,14 @@ public class CartController : ControllerBase
         var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         return claim is not null ? int.Parse(claim) : null;
     }
+
+    [HttpPut("{cartId}")]
+    public async Task<IActionResult> UpdateQuantity(int cartId, [FromBody] UpdateCartDto dto)
+    {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+        await _cartService.UpdateQuantityAsync(userId.Value, cartId, dto.Quantity);
+        return NoContent();
+    }
+
 }
