@@ -18,4 +18,8 @@ public class ProductFilterParams
     public bool? LimitedEdition { get; set; }
     public int? Pieces { get; set; }
     public string? Difficulty { get; set; }
+    public string? SearchText { get; set; }
+    public bool? OutOfStock { get; set; }
+    public bool? NewArrivals { get; set; }
+    public bool? BestSellers { get; set; }
 }

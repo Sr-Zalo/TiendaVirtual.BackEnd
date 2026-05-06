@@ -75,6 +75,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             .Include(p => p.Book)
             .Include(p => p.Collectible)
             .Include(p => p.Puzzle)
+            .Include(p => p.OrderLines)
             .Where(p => p.Enabled);
 
         if (!includeOutOfStock)
@@ -114,6 +115,20 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             query = query.Where(p => p.Puzzle != null && p.Puzzle.Pieces <= filters.Pieces);
         if (!string.IsNullOrEmpty(filters.Difficulty))
             query = query.Where(p => p.Puzzle != null && p.Puzzle.Difficulty == filters.Difficulty);
+        if (!string.IsNullOrEmpty(filters.SearchText))
+            query = query.Where(p => p.Name.Contains(filters.SearchText) ||
+                                     (p.Description != null && p.Description.Contains(filters.SearchText)));
+        if (filters.OutOfStock.HasValue && filters.OutOfStock.Value)
+            query = query.Where(p => p.Stock == 0);
+
+        if (filters.NewArrivals.HasValue && filters.NewArrivals.Value)
+            query = query.OrderByDescending(p => p.IDate);
+
+        if (filters.BestSellers.HasValue && filters.BestSellers.Value)
+            query = query.OrderByDescending(p =>
+                p.OrderLines.Sum(ol => ol.Quantity));
+        if (!includeOutOfStock && !(filters.OutOfStock.HasValue && filters.OutOfStock.Value))
+            query = query.Where(p => p.Stock > 0);
 
         return await query.ToListAsync();
     }
