@@ -5,11 +5,11 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
-RUN dotnet restore "TiendaVirtual.WebApi/TiendaVirtual.WebApi.csproj"
-RUN dotnet build "TiendaVirtual.WebApi/TiendaVirtual.WebApi.csproj" -c Release -o /app/build
+RUN dotnet restore "TiendaVirtual.BackEnd/TiendaVirtual.WebApi.csproj"
+RUN dotnet build "TiendaVirtual.BackEnd/TiendaVirtual.WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "TiendaVirtual.WebApi/TiendaVirtual.WebApi.csproj" -c Release -o /app/publish
+RUN dotnet publish "TiendaVirtual.BackEnd/TiendaVirtual.WebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
