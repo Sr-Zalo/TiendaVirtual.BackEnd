@@ -13,6 +13,7 @@ public class CartRepository : GenericRepository<Cart>, ICartRepository
     {
         return await _context.Carts
             .Include(c => c.Product)
+            .ThenInclude(p => p.Images)
             .Where(c => c.UserId == userId && c.Enabled)
             .ToListAsync();
     }

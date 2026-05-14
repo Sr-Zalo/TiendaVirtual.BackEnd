@@ -94,7 +94,15 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ProductName,
                        opt => opt.MapFrom(src => src.Product.Name))
             .ForMember(dest => dest.Price,
-                       opt => opt.MapFrom(src => src.Product.Price));
+                       opt => opt.MapFrom(src => src.Product.Price))
+            .ForMember(dest => dest.ImageUrl,
+    opt => opt.MapFrom(src => src.Product.Images != null
+        ? src.Product.Images.FirstOrDefault(i => i.IsMain) != null
+            ? src.Product.Images.First(i => i.IsMain).Url
+            : src.Product.Images.FirstOrDefault() != null
+                ? src.Product.Images.First().Url
+                : null
+        : null));
 
         // Order
         CreateMap<Order, OrderDto>()
