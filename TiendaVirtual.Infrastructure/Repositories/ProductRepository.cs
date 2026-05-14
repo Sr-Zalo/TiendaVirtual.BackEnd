@@ -20,6 +20,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             .Include(p => p.Book)
             .Include(p => p.Collectible)
             .Include(p => p.Puzzle)
+            .Include(p => p.Images)
             .FirstOrDefaultAsync(p => p.ProductId == id && p.Enabled);
     }
 
@@ -32,6 +33,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             .Include(p => p.Book)
             .Include(p => p.Collectible)
             .Include(p => p.Puzzle)
+            .Include(p => p.Images)
             .Where(p => p.Enabled)
             .ToListAsync();
     }
@@ -45,6 +47,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             .Include(p => p.Book)
             .Include(p => p.Collectible)
             .Include(p => p.Puzzle)
+            .Include(p => p.Images)
             .Where(p => p.CategoryId == categoryId && p.Enabled)
             .ToListAsync();
     }
@@ -58,6 +61,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             .Include(p => p.Book)
             .Include(p => p.Collectible)
             .Include(p => p.Puzzle)
+            .Include(p => p.Images)
             .Where(p => p.Enabled);
 
         if (!includeOutOfStock)
@@ -76,6 +80,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             .Include(p => p.Collectible)
             .Include(p => p.Puzzle)
             .Include(p => p.OrderLines)
+            .Include(p => p.Images)
             .Where(p => p.Enabled);
 
         if (!includeOutOfStock)

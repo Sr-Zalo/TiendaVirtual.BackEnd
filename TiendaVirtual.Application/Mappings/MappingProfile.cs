@@ -61,7 +61,10 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Creator,
                        opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Creator : null))
             .ForMember(dest => dest.Dimensions,
-                       opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Dimensions : null));
+                       opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Dimensions : null))
+            .ForMember(dest => dest.Images,
+                       opt => opt.MapFrom(src => src.Images ?? new List<ProductImage>()));
+
 
         CreateMap<CreateProductDto, Product>();
         CreateMap<UpdateProductDto, Product>();
@@ -164,5 +167,7 @@ public class MappingProfile : Profile
                        opt => opt.MapFrom(src => src.Puzzle != null ? src.Puzzle.Dimensions : null));
 
         CreateMap<TiendaVirtual.Domain.Entities.Category, CategoryDto>();
+        // ProductImage
+        CreateMap<ProductImage, ProductImageDto>();
     }
 }

@@ -41,6 +41,8 @@ public class ProductDto
     public string? Shape { get; set; }
     public string? Creator { get; set; }
     public string? Dimensions { get; set; }
+    public List<ProductImageDto> Images { get; set; } = new();
 
     public int CategoryId { get; set; }
+
 }
